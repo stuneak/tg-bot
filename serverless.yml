@@ -1,0 +1,32 @@
+org: stuneak
+app: latvia-msk-bot
+service: latvia-msk-bot
+useDotenv: true
+variablesResolutionMode: 20210326
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 4002
+
+provider:
+  timeout: 15
+  memorySize: 512
+  lambdaHashingVersion: 20201221
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-2
+  environment:
+    TELEGRAM_TOKEN: ${env:TELEGRAM_TOKEN}
+
+functions:
+  processWebhook:
+    timeout: 15
+    memorySize: 512
+    handler: handler.processWebhook
+    events:
+      - http:
+          path: /
+          method: post
